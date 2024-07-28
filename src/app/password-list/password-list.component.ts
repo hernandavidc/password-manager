@@ -10,22 +10,25 @@ import { PasswordService } from './get.service';
 })
 export class PasswordListComponent {
 
-  public passwordsL : Array<IPassword> = []
+  public passwords : Array<IPassword> = []
 
   constructor(private router: Router, private passwordService: PasswordService) { }
 
-  passwords = [
-    { name: 'Cuenta de correo', hint: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
-    { name: 'Otra cuenta', hint: 'Donec lectus sem, mattis eget porta quis, ultrices a tellus.' },
-  ];
-
   ngOnInit() {
-    // this.getPasswords();
+    this.getPasswords();
   }
 
   private getPasswords() : void {
     this.passwordService.getPasswords().subscribe(passwords => {
-      this.passwordsL = passwords;
+      passwords.forEach(element => {
+        let password : IPassword = {
+          name : element.nombre,
+          password : element.clave,
+          confirmPassword : element.clave,
+          hint : element.pista
+        }
+        this.passwords.push(password)
+      })
     })
   }
 
