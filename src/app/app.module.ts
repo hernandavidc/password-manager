@@ -13,7 +13,8 @@ import { CreatePasswordComponent } from './create-password/create-password.compo
     AppComponent,
     LoginComponent,
     PasswordListComponent,
-    CreatePasswordComponent
+    CreatePasswordComponent,
+    
   ],
   imports: [
     BrowserModule,
