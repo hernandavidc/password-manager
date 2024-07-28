@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { PasswordService } from './create.service';
 import { IPassword } from '../models/password';
@@ -11,38 +12,41 @@ import { IPassword } from '../models/password';
   styleUrls: ['./create-password.component.css']
 })
 export class CreatePasswordComponent {
-  name: string = '';
-  password: string = '';
-  confirmPassword: string = '';
-  hint: string = '';
+  public passwordForm!: FormGroup;
 
   constructor(private router: Router, 
     private createService: PasswordService,
-    private toastr: ToastrService) { }
-
-  onSubmit() {
-    this.toastr.success("Confirmación", "Clave creada", {positionClass: 'toast-bottom-left'});
-    setTimeout(() => {
-      alert('Clave creada con éxito');
-      this.router.navigate(['/passwords']);
-    }, 1000);
+    private toastr: ToastrService,
+    private formBuilder: FormBuilder,) { }
+  
+  ngOnInit() {
+    this.passwordForm = this.formBuilder.group({
+      name: ["", [Validators.required, Validators.maxLength(50)]],
+      password: ["", [Validators.required, Validators.maxLength(50)]],
+      confirmPassword: ["", [Validators.required, Validators.maxLength(50)]],
+      hint: ["", [Validators.required, Validators.maxLength(50)]],
+    })
   }
 
   onCancel() {
+    this.passwordForm.reset();
     this.router.navigate(['/passwords']);
   }
 
-  public createPassword(): void{
-    var password : IPassword = {
-      name: this.name,
-      password: this.password,
-      hint: this.hint
-    }
-    this.createService.createPassword(password).subscribe(
-      passwordResult => {
-        this.toastr.success("Confirmación", "Clave creada", {positionClass: 'toast-bottom-left'})
-        console.log("Creada con éxito")
+  public createPassword(password : IPassword): void{
+    if (this.passwordForm.valid) {
+      if (password.confirmPassword != password.password) {
+        this.toastr.error("Error", "Las claves no coinciden")
+        return
       }
-    )
+      this.createService.createPassword(password).subscribe(
+        passwordResult => {
+          this.toastr.success("Confirmación", "Clave creada")
+          this.passwordForm.reset();
+          console.log("Creada con éxito")
+          this.router.navigate(['/passwords']);
+        }
+      )
+    }
   }
 }

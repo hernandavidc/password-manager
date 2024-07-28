@@ -3,5 +3,5 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  apiUrl: 'http://localhost:3000/api/v1',
+  apiUrl: 'https://api-dot-tfg-demo-318500.uc.r.appspot.com/clave-favorita',
 };
