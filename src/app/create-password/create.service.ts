@@ -13,10 +13,6 @@ export class PasswordService {
 
   constructor(private http : HttpClient) { }
 
-  public getPasswords() : Observable<IPassword[]> {
-    return this.http.get<IPassword[]>(this.apiUrl);
-  }
-
   public createPassword(password : IPassword) : Observable<IPassword> {
     return this.http.post<IPassword>(this.apiUrl, password);
   }
