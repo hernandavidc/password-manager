@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
 import { PasswordService } from './create.service';
 import { IPassword } from '../models/password';
 
@@ -15,9 +17,11 @@ export class CreatePasswordComponent {
   hint: string = '';
 
   constructor(private router: Router, 
-    private createService: PasswordService) { }
+    private createService: PasswordService,
+    private toastr: ToastrService) { }
 
   onSubmit() {
+    this.toastr.success("Confirmación", "Clave creada", {positionClass: 'toast-bottom-left'});
     setTimeout(() => {
       alert('Clave creada con éxito');
       this.router.navigate(['/passwords']);
@@ -36,6 +40,7 @@ export class CreatePasswordComponent {
     }
     this.createService.createPassword(password).subscribe(
       passwordResult => {
+        this.toastr.success("Confirmación", "Clave creada", {positionClass: 'toast-bottom-left'})
         console.log("Creada con éxito")
       }
     )

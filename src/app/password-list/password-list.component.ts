@@ -20,7 +20,7 @@ export class PasswordListComponent {
   ];
 
   ngOnInit() {
-    this.getPasswords();
+    // this.getPasswords();
   }
 
   private getPasswords() : void {
